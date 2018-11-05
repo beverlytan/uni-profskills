@@ -3,6 +3,9 @@
 .Rproj
 uni-profskills.Rproj
 
+# pdf files 
+*.pdf 
+
 # Prevent users from committing their own .RData and .Rhistory in mutual areas
 .RData
 .Rhistory
@@ -21,4 +24,4 @@ uni-profskills.Rproj
 # Prevent users from committing the README files created by RStudio
 *README.html
 *README_cache/
-#*README_files/
+*README_files/
