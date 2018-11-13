@@ -18,7 +18,7 @@ names(soils)
 head(soils)
 summary(soils)
 
-# Running ANOVA: pH varying with habitat ---- 
+# (6.1) Running ANOVA: pH varying with habitat ---- 
 
 lm_pH <- lm(Soil_pH ~ Habitat, data = soils)
 
@@ -42,7 +42,7 @@ bartlett.test(Soil_pH ~ Habitat, data = soils)     # p-value = 0.9735
 
 anova(lm_pH)                                       # p-value = 0.0002474
 
-# Running ANOVA: soil potassium varying with habitat ---- 
+# (6.1) Running ANOVA: soil potassium varying with habitat ---- 
 
 lm_K <- lm(Potassium ~ Habitat, data = soils)
 
@@ -80,7 +80,7 @@ anova(lm_logK)                                     # p-value = 9.956e-05
 
 
 
-# Linear regression: pH with amount of clay ---- 
+# (6.2) Linear regression: pH with amount of clay ---- 
 
 lm_pH_clay <- lm(Soil_pH ~ Clay, data = soils)
 
@@ -191,7 +191,8 @@ abline(lm_pH_clay, col = "red")
 
 
 
-# Non-parametric: Kruskal-Wallis (Anova) ---- 
+
+# (6.5) Non-parametric: Kruskal-Wallis (Anova) ---- 
 
 lm_na <- lm(Sodium ~ Habitat, data = soils)
 
@@ -213,7 +214,7 @@ bartlett.test(log(Sodium) ~ Habitat, data = soils) # p-value = 0.006953
 
 kruskal.test(Sodium ~ Habitat, data = soils)       # p-value = 0.0002655
 
-# Non-parametric: Spearman (linear regression) ---- 
+# (6.6) Non-parametric: Spearman (linear regression) ---- 
 
 lm_sand_tbs <- lm(Total_Base_Saturation ~ Sand, data = soils)
 
@@ -227,9 +228,25 @@ car::ncvTest(lm_sand_tbs)                          # p-value = 0.42564
 # assumptions ARE met, but assuming that they are not, we can run the non-
 # parametric equivalent instead! 
 
+## Testing assumptions: using plot(linear model) to assess the diagnostic plots 
+
+hist(lm_sand_tbs_resids) # Histogram 
+
+plot(lm_sand_tbs)
+
+# Residuals-fitted: allow us to check normally distributed 
+
+# QQ-plot: allow us to check normally distributed 
+
+# Scale-location: allows us to check homoscedasticity
+# There is no horizontal line that is equally spread, i.e. heteroscedastic!
+
+# Residual-leverage: would show us if there are any outlying points 
+# The outlying points that could have a large influence on the regression model
+# that might need to be removed 
+
+## Running the correlation
+
 cor.test(soils$Sand, soils$Total_Base_Saturation,  # p-value = 0.002412
          data = soils, method = "spearman")
-
-
-
 
