@@ -88,6 +88,12 @@ plot(resid(mod3) ~ Soil_pH, data = combo)
 # there is something else affecting the abundance in upland, besides soil pH! 
 # So we should plot out our raw data and see how our predicted values compare!
 
+# If we just visualize the model as it is - the method = lm thing is wrong
+
+ggplot(combo, aes(x = Soil_pH, y = thibaudiana, colour = Habitat)) + 
+  geom_point() + 
+  geom_smooth(method = "lm", aes(fill = Habitat))
+
 # Plottig raw data with values from fitted()
 
 fit_val <- as.data.frame(fitted(mod3))
@@ -98,6 +104,7 @@ combo_mod3 <- cbind(fit_val, combo)
 (plot_mod3 <- ggplot(combo_mod3, aes(x = Soil_pH, y = thibaudiana)) + 
     geom_point(aes(colour = Habitat, shape = Habitat)) + 
     geom_point(aes(y = fitted(mod3)), shape = 1) + 
+    geom_line(aes(y = fitted(mod3), colour = Habitat)) +
     theme_bw())
 
 # Plottig raw data with values from ggpredict() = refer to further-script.R
@@ -113,7 +120,7 @@ plot(ggpred_val)
 ggplot(ggpred_val, aes(x, predicted)) + 
   geom_line(aes(colour = group)) +
   geom_ribbon(aes(x, ymin = conf.low, ymax = conf.high, fill = group), alpha = 0.2) + 
-  geom_point(data = combo_mod3, aes(Soil_pH, thibaudiana, colour = Habitat)) + 
+  geom_point(data = combo, aes(Soil_pH, thibaudiana, colour = Habitat)) + 
   labs(x = "Soil pH", y = "Predicted abundance of thibaudiana") +
   theme_bw() + 
   theme(panel.grid = element_blank())
@@ -172,7 +179,7 @@ plot(ggpred_val_1b)
 ggplot(ggpred_val_1b, aes(x, predicted)) + 
   geom_line() +
   geom_ribbon(aes(x, ymin = conf.low, ymax = conf.high), alpha = 0.2) + 
-  geom_point(data = combo_mod1b, aes(Soil_pH, auristellae_PA)) + 
+  geom_point(data = combo, aes(Soil_pH, auristellae_PA)) + 
   labs(x = "Soil pH", y = "Predicted probabilities of Auristellae") +
   theme_bw() + 
   theme(panel.grid = element_blank())
