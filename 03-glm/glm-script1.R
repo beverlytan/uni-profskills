@@ -88,15 +88,36 @@ plot(resid(mod3) ~ Soil_pH, data = combo)
 # there is something else affecting the abundance in upland, besides soil pH! 
 # So we should plot out our raw data and see how our predicted values compare!
 
-fitval <- as.data.frame(fitted(mod3))
-fitval
+# Plottig raw data with values from fitted()
 
-combo <- cbind(fitval, combo)
+fit_val <- as.data.frame(fitted(mod3))
+fit_val
 
-(plot_mod3 <- ggplot(combo, aes(x = Soil_pH, y = thibaudiana)) + 
+combo_mod3 <- cbind(fit_val, combo)
+
+(plot_mod3 <- ggplot(combo_mod3, aes(x = Soil_pH, y = thibaudiana)) + 
     geom_point(aes(colour = Habitat, shape = Habitat)) + 
     geom_point(aes(y = fitted(mod3)), shape = 1) + 
     theme_bw())
+
+# Plottig raw data with values from ggpredict() = refer to further-script.R
+# fit_val and ggpred_val predictions are the same!! Great. 
+
+ggpred_val <- ggpredict(mod3, terms = c("Soil_pH", "Habitat"))
+View(ggpred_val)
+
+# Default plotting with plot() from ggpredict
+plot(ggpred_val) 
+
+# Plotting using ggplot! So this new graph is the model that has the two expl variables!
+ggplot(ggpred_val, aes(x, predicted)) + 
+  geom_line(aes(colour = group)) +
+  geom_ribbon(aes(x, ymin = conf.low, ymax = conf.high, fill = group), alpha = 0.2) + 
+  geom_point(data = combo_mod3, aes(Soil_pH, thibaudiana, colour = Habitat)) + 
+  labs(x = "Soil pH", y = "Predicted abundance of thibaudiana") +
+  theme_bw() + 
+  theme(panel.grid = element_blank())
+
 
 # Exercise 3: Generalised linear models, Binomial response ---- 
 
@@ -125,15 +146,35 @@ AIC(mod_null_b, mod1b, mod2b, mod3b, mod4b)
 # We can see that the AICs are all quite similar, so lets just go with the 
 # one that is the lowest i.e. mod1b the soil pH one! 
 
-# Visualizing model 1b
+# Visualizing model 1b with fitted() 
+# mod1b <- glm(auristellae_PA ~ Soil_pH, data = combo, family = binomial)
 
-fitval_1b <- as.data.frame(fitted(mod1b))
+fit_val_1b <- as.data.frame(fitted(mod1b))
+View(fit_val_1b)
 
-combo <- cbind(fitval_1b, combo)
+combo_mod1b <- cbind(fit_val_1b, combo)
+View(combo_mod1b)
 
-(plot_mod_1b <- ggplot(combo, aes(x = Soil_pH, y = auristellae_PA)) + 
+(plot_mod1b <- ggplot(combo_mod1b, aes(x = Soil_pH, y = auristellae_PA)) + 
     geom_point() + 
     geom_point(aes(y = fitted(mod1b)), shape = 1) + 
     theme_bw())
+
+# Visualizing model 1b with ggpredict(), ggpred_val_1b has same preds as fit_val_1b
+
+ggpred_val_1b <- ggpredict(mod1b, terms = "Soil_pH")
+View(ggpred_val_1b)
+
+# Default plotting with plot() from ggpredict
+plot(ggpred_val_1b) 
+
+# Plotting using ggplot! So this new graph is the model that has the two expl variables!
+ggplot(ggpred_val_1b, aes(x, predicted)) + 
+  geom_line() +
+  geom_ribbon(aes(x, ymin = conf.low, ymax = conf.high), alpha = 0.2) + 
+  geom_point(data = combo_mod1b, aes(Soil_pH, auristellae_PA)) + 
+  labs(x = "Soil pH", y = "Predicted probabilities of Auristellae") +
+  theme_bw() + 
+  theme(panel.grid = element_blank())
 
 
