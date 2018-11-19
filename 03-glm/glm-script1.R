@@ -64,10 +64,6 @@ summary(mod3)
 
 ## Plot predicted vs observed values to see how well they match 
 
-# fitted() vs predict() is best explained here: https://stackoverflow.com/questions/12201439/is-there-a-difference-between-the-r-functions-fitted-and-predict 
-# predict is before the exponential is applied 
-# and fitted is after we've applied the exponentiate, to correct the values back! 
-
 plot(combo$thibaudiana, fitted(mod3), xlab="Observed", ylab="predicted")
 abline(0,1)
 
@@ -75,14 +71,11 @@ abline(0,1)
 
 combo$Habitat <- as.factor(combo$Habitat)
 
-# This allows me to have the below two graphs as side by side in my window
-
-par(mfrow=c(1,2))                           
+## Boxplot of residuals-cat-predictor & residuals-v-cont-predictor
 
 plot(resid(mod3) ~ Habitat, data = combo)
 plot(resid(mod3) ~ Soil_pH, data = combo)
 
-# Boxplot of residuals OR residuals vs soil-pH 
 # when we look at the residuals, we're basically talking about equal variances
 # so we want the extent of the variance between the two habitat to be the same
 # i.e. the EXTENT of the boxplot to be the same
@@ -104,30 +97,6 @@ combo <- cbind(fitval, combo)
     geom_point(aes(colour = Habitat, shape = Habitat)) + 
     geom_point(aes(y = fitted(mod3)), shape = 1) + 
     theme_bw())
-
-## Comparing 
-
-mod3 <- glm(thibaudiana ~ Habitat + Soil_pH, data = combo, family = poisson)
-summary(mod3)
-
-test_predict <- as.data.frame(predict(mod3))
-test_predict
-
-# ggpredict values are different from the predict(mod3) or fitted(mod3)
-
-habitat <- ggeffects::ggpredict(mod3, terms = "Habitat")
-habitat
-
-soil_ph <- ggeffects::ggpredict(mod3, terms = "Soil_pH")
-soil_ph
-
-testmod <- lm(thibaudiana ~ Habitat * Soil_pH, data = combo)
-summary(testmod)
-as.data.frame(fitted(testmod))
-as.data.frame(predict(testmod))
-ggeffects::ggpredict(testmod, terms = "Soil_pH")
-
-
 
 # Exercise 3: Generalised linear models, Binomial response ---- 
 
