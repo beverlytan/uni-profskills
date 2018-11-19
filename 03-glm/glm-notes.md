@@ -7,3 +7,9 @@
 - I've realised that there is a difference when you have model outputs from fitted() or predict() or ggpredict() 
   - I've created another script to test out and try to explain the differences
   - So that I can figure out which is the best for my purposes
+  - GUESS WHAT - THERE ISNT A DIFFERENCE!!!! 
+    - I just had my syntax wrong, so everything is great, at least for the models: 
+      - Two explanatory variables, with no interaction
+      - Two explanatory variables, no interaction
+      - One explanatory variable 
+    - I need to repeat it for mixed models now! 

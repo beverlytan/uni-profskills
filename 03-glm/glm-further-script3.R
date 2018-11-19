@@ -7,9 +7,6 @@
 
 library(tidyverse)
 library(ggeffects)
-data(efc)
-View(efc)
-head(efc)
 
 soils <- read_csv("02-multiple-predictors/peru_soil_data.csv")
 inga <- read_csv("03-glm/inga_abundances.csv")
@@ -22,8 +19,8 @@ summary(mod1)
 
 ## USING GGPREDICT()
 
-gg_preds <- ggpredict(mod1, terms = c("Soil_pH", "Habitat"))
-View(gg_preds)
+gg_preds_1 <- ggpredict(mod1, terms = c("Soil_pH", "Habitat"))
+View(gg_preds_1)
 
 # Note here that the first term is grouped by the levels of the second
 # and if you have a third, and the third
@@ -32,8 +29,8 @@ View(gg_preds)
 
 ## USING FITTED()
 
-fit_preds <- as.data.frame(fitted(mod1))
-combo_mod1 <- cbind(fit_preds, combo)
+fit_preds_1 <- as.data.frame(fitted(mod1))
+combo_mod1 <- cbind(fit_preds_1, combo)
 View(combo_mod1)
 
 # If I use fitted(mod1) and merge that to my original dataframe 
@@ -51,10 +48,25 @@ exp(-1.710389) # 0.1807954 Shows that if you exp(predict_values) = fitted_values
 
 mod2 <- lm(thibaudiana ~ Habitat * Soil_pH, data = combo)
 summary(mod2)
-as.data.frame(fitted(mod2))
-as.data.frame(predict(mod2))
-ggpredict(mod2, terms = "Soil_pH")
+
+## USING GGPREDICT()
+
+gg_preds_2 <- ggpredict(mod2, terms = c("Soil_pH", "Habitat"))
+View(gg_preds_2)
+
+## USING FITTED()
+
+fit_preds_2 <- as.data.frame(fitted(mod2))
+combo_mod2 <- cbind(fit_preds_2, combo)
+View(combo_mod2)
+
+## GREAT, GGPREDICT() IS THE SAME AS FITTED() AGAIN
+## AND PREDS FR MOD1 AND MOD2 ARE DIFFERENT - it has taken into account the interaction!
 
 
 
 
+
+# FOR THE VISUALIZATIONS, REFER TO GLM-SCRIPT-1.R ---- 
+
+# TESTING: RANDOM EFFECTS, MIXED MODELS!
