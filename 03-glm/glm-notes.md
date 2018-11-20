@@ -13,3 +13,5 @@
       - Two explanatory variables, no interaction
       - One explanatory variable 
     - I need to repeat it for mixed models now! 
+      - And it works! 
+      - But note that I can't test the visualization using the professional skills code because its categorical variables

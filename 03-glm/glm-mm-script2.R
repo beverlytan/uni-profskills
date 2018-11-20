@@ -60,3 +60,24 @@ View(soils_fit4)
     geom_abline() +
     theme_bw())
 
+# Testing ggeffects::ggpredict() vs fitted() for mixed effects ----
+
+# Let's try it with phosphorus that hasnt been log-transformed
+
+test_mod <- lmer(Phosphorus ~ Habitat + (1 | River_Basin), data = soils)
+
+## fitted() 
+
+fit <- as.data.frame(fitted(test_mod))
+View(fit)
+soils_fit_test <- cbind (fit, soils)
+View(soils_fit_test)
+
+## ggpredict()
+
+ggpred <- ggpredict(test_mod, terms = c("Habitat", "River_Basin"), type = "re")
+
+View(ggpred)
+
+# Great - ggpredict and fitted work the same! :-) 
+
