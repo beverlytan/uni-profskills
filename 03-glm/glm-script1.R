@@ -137,6 +137,8 @@ auristellae_PA[auristellae_PA>0] <- 1
 mod1b <- glm(auristellae_PA ~ Soil_pH, data = combo, family = binomial)
 summary(mod1b)
 
+# As we set the value to one when Inga auristellae is present, this indicates that as soil pH increases, Inga auristellae is less likely to be present (i.e. to switch from a value of 1 to a value of 0).
+
 # Evaluate the model against null models 
 
 mod_null_b <- glm(auristellae_PA~1,data=combo,family=binomial)
